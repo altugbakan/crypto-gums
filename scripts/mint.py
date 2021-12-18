@@ -1,0 +1,39 @@
+from brownie import Gum, config, network
+
+from scripts.helpful_scripts import (
+    LOCAL_BLOCKCHAIN_ENVIRONMENTS,
+    fund_with_link,
+    get_account,
+    get_opensea_uri,
+)
+from scripts.deploy import mint, withdraw
+
+
+def main():
+    gum = Gum[-1]
+    account = get_account()
+
+    # Fund the NFT contract with LINK
+    print("Funding contract with LINK...")
+    tx = fund_with_link(
+        gum.address, account, config["networks"][network.show_active()]["fee"]
+    )
+    tx.wait(1)
+    print("Funded.")
+
+    # Mint an NFT
+    print("Minting an NFT...")
+    tx = mint(gum, account=account)
+    tx.wait(1)
+    print("Minted.")
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        print(
+            f"You can view your NFT at {get_opensea_uri(gum.address, gum.tokenCounter(), network.show_active() == 'polygon')}"
+        )
+
+    # Withdraw tokens
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        print("Withdrawing tokens...")
+        tx = withdraw(gum, account)
+        tx.wait(1)
+        print("Withdrawn.")
