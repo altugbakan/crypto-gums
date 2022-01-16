@@ -6,12 +6,16 @@ from scripts.helpful_scripts import (
     get_account,
     get_opensea_uri,
 )
-from scripts.deploy import mint, withdraw
+from scripts.deploy import deploy, mint, withdraw
 
 
 def main():
-    gum = Gum[-1]
     account = get_account()
+    gum = (
+        Gum[-1]
+        if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS
+        else deploy(account)
+    )
 
     # Fund the NFT contract with LINK
     print("Funding contract with LINK...")
