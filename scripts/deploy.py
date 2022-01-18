@@ -1,4 +1,5 @@
-from brownie import Gum, network, config
+from brownie import Gum, network, config, Contract
+from brownie.network.account import Account
 import random
 
 from scripts.helpful_scripts import (
@@ -10,7 +11,7 @@ from scripts.helpful_scripts import (
 )
 
 
-def deploy(account=get_account()):
+def deploy(account: Account = get_account()):
     return Gum.deploy(
         get_contract("vrf_coordinator"),
         get_contract("link_token"),
@@ -21,15 +22,19 @@ def deploy(account=get_account()):
     )
 
 
-def mint(gum, flavor=random.randrange(0, 4), account=get_account()):
+def mint(
+    gum: Contract,
+    flavor: int = random.randrange(0, 4),
+    account: Account = get_account(),
+):
     return gum.createCollectible(flavor, {"from": account, "value": gum.PRICE()})
 
 
-def withdraw(gum, account=get_account()):
+def withdraw(gum: Contract, account: Account = get_account()):
     return gum.withdraw({"from": account})
 
 
-def withdraw_link(gum, account=get_account()):
+def withdraw_link(gum: Contract, account: Account = get_account()):
     return gum.withdrawLink({"from": account})
 
 

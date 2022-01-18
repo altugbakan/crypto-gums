@@ -6,6 +6,7 @@ from brownie import (
     config,
     Contract,
 )
+from brownie.network.account import Account
 
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache"]
 MAINNET_OPENSEA_URL = "https://opensea.io/assets/matic"
@@ -16,7 +17,7 @@ CONTRACT_TO_MOCK = {
 }
 
 
-def get_account(index=None, id=None):
+def get_account(index: int = None, id=None) -> Account:
     if index:
         return accounts[index]
     if id:
@@ -26,7 +27,7 @@ def get_account(index=None, id=None):
     return accounts.add(config["wallets"]["from_key"])
 
 
-def get_contract(contract_name):
+def get_contract(contract_name: str) -> Contract:
     contract_type = CONTRACT_TO_MOCK[contract_name]
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         if len(contract_type) <= 0:
@@ -47,17 +48,15 @@ def deploy_mocks():
 
 
 def fund_with_link(
-    contract_address,
-    account=get_account(),
-    amount=2 * 10 ** 18,
+    contract_address: str,
+    account: Account = get_account(),
+    amount: int = 2 * 10 ** 18,
 ):
     link_token = get_contract("link_token")
-    tx = link_token.transfer(contract_address, amount, {"from": account})
-    tx.wait(1)
-    return tx
+    return link_token.transfer(contract_address, amount, {"from": account})
 
 
-def get_opensea_uri(address, token_id):
+def get_opensea_uri(address: str, token_id: int):
     if network.show_active() == "polygon-main":
         return f"{MAINNET_OPENSEA_URL}/{address}/{token_id}"
     else:

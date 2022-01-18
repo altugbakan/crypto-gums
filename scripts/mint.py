@@ -32,7 +32,7 @@ def main():
     print("Minted.")
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         print(
-            f"You can view your NFT at {get_opensea_uri(gum.address, gum.tokenCounter(), network.show_active() == 'polygon')}"
+            f"You can view your NFT at {get_opensea_uri(gum.address, gum.requestCounter())}"
         )
 
     # Withdraw tokens

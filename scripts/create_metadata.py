@@ -27,23 +27,23 @@ WRAPPERS = [
 NFT_STORAGE_URL = "https://api.nft.storage/upload"
 
 
-def parse_properties(flavor, wrapper, color):
+def parse_properties(flavor: str, wrapper: str, color: int) -> tuple[str, str, str]:
     return FLAVORS[flavor], WRAPPERS[wrapper], f"{color:06X}"
 
 
-def upload_to_nft_storage(file_path):
-    file_name = file_path.split("/")[-1]
+def upload_to_nft_storage(path: str) -> str:
+    file_name = path.split("/")[-1]
     headers = {
         "Authorization": f"Bearer {os.getenv('NFT_STORAGE_API_KEY')}",
     }
-    with open(file_path, "rb") as f:
+    with open(path, "rb") as f:
         response = requests.post(
             NFT_STORAGE_URL, files={"file": (file_name, f.read())}, headers=headers
         )
         return f"ipfs://{response.json()['value']['cid']}/{file_name}"
 
 
-def save_index(token_id, json_uri):
+def save_index(token_id: int, json_uri: str):
     uri_list_file_name = "./metadata/uri_list.json"
     if os.path.exists(uri_list_file_name):
         with open(uri_list_file_name, "r") as f:
@@ -55,13 +55,13 @@ def save_index(token_id, json_uri):
         json.dump(uri_list, f)
 
 
-def create_metadata(token_id, flavor, wrapper, color):
+def create_metadata(token_id: int, flavor: str, wrapper: str, color: str) -> str:
     metadata_file_name = f"./metadata/{token_id}.json"
     image_file_name = f"./metadata/{token_id}.svg"
     token_metadata = METADATA_TEMPLATE
     token_metadata["name"] = f"Crypto Gum #{token_id}"
     token_metadata["description"] = f"A {flavor} flavored gum."
-    create_image(image_file_name, flavor, wrapper, color)
+    create_image(flavor, wrapper, color, image_file_name)
     image_uri = upload_to_nft_storage(image_file_name)
     token_metadata["image"] = image_uri
     token_metadata["attributes"] = [
@@ -76,7 +76,7 @@ def create_metadata(token_id, flavor, wrapper, color):
     return json_uri
 
 
-def get_uri(token_id, flavor, wrapper, color):
+def get_uri(token_id: int, flavor: str, wrapper: str, color: str) -> str:
     uri_list_file_name = "./metadata/uri_list.json"
     if not os.path.exists(uri_list_file_name):
         return create_metadata(token_id, flavor, wrapper, color)
