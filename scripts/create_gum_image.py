@@ -13,49 +13,48 @@ WRAPPERS = {
 }
 
 
-def get_lines(image):
-    with open(image, "r") as f:
-        lines = f.readlines()
+def get_lines(path: str) -> list[str]:
+    with open(path, "r") as f:
+        lines = [line for line in f.readlines() if "svg" not in line]
     return lines
 
 
-def get_flavor(flavor):
+def get_flavor(flavor: str) -> list[str]:
     return get_lines(FLAVORS[flavor])
 
 
-def get_wrapper(wrapper):
+def get_wrapper(wrapper: str) -> list[str]:
     wrapper = WRAPPERS[wrapper]
     if wrapper == "none":
         return []
     return get_lines(wrapper)
 
 
-def get_color(color):
+def get_color(color: str) -> list[str]:
     lines = get_lines("drawings/gum-color.svg")
     return [line.replace('fill="#000000"', f'fill="#{color}"') for line in lines]
 
 
-def get_base():
+def get_base() -> list[str]:
     return get_lines("drawings/gum-base.svg")
 
 
-def save_gum(path, lines):
+def save_gum(path: str, lines: list[str]):
     with open(path, "w") as f:
-        f.write(
-            '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" shape-rendering="crispEdges" viewBox="0 1 58 54">\n'
-        )
         f.writelines(lines)
-        f.write(
-            "</svg>",
-        )
 
 
-def create_image(path, flavor, wrapper, color):
-    lines = []
+def create_image(flavor: str, wrapper: str, color: str, path: str = None) -> list[str]:
+    lines = [
+        '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" shape-rendering="crispEdges" viewBox="0 1 58 54">\n',
+        *get_color(color),
+        *get_wrapper(wrapper),
+        *get_flavor(flavor),
+        *get_base(),
+        "</svg>",
+    ]
 
-    lines.extend(get_color(color))
-    lines.extend(get_wrapper(wrapper))
-    lines.extend(get_flavor(flavor))
-    lines.extend(get_base())
+    if path:
+        save_gum(path, lines)
 
-    save_gum(path, lines)
+    return lines
