@@ -7,7 +7,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract Gum is ERC721URIStorage, VRFConsumerBase {
     uint256 public constant MAX_MINT = 20000;
-    uint256 public constant PRICE = 2000000000000000000; // 2 MATIC
+    uint256 public constant PRICE = 2 ether;
 
     event requestedCollectible(
         bytes32 indexed requestID,
