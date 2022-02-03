@@ -18,10 +18,10 @@ interface IGum {
 
     function tokenID() external view returns (uint256);
 
-    function tokenURI(uint256 _tokenID)
+    function tokenURI(uint256 tokenID)
         external
         view
-        returns (string memory _tokenURI);
+        returns (string memory tokenURI);
 
     function tokenIDToProperties(uint256)
         external
@@ -34,7 +34,7 @@ interface IGum {
 
     function createCollectible(uint256 flavor) external payable;
 
-    function setTokenURI(uint256 _tokenID, string memory _tokenURI) external;
+    function setTokenURI(uint256 tokenID, string memory tokenURI) external;
 
     function withdraw() external;
 

@@ -73,9 +73,9 @@ contract Gum is ERC721URIStorage, VRFConsumerBase {
         emit requestedCollectible(requestID, requestCounter, flavor);
     }
 
-    function setTokenURI(uint256 _tokenID, string memory _tokenURI) public {
+    function setTokenURI(uint256 tokenID, string memory tokenURI) public {
         require(msg.sender == owner, "Only admin can set URI");
-        _setTokenURI(_tokenID, _tokenURI);
+        _setTokenURI(tokenID, tokenURI);
     }
 
     function withdraw() public {
@@ -89,30 +89,30 @@ contract Gum is ERC721URIStorage, VRFConsumerBase {
         _linkToken.transfer(msg.sender, _linkToken.balanceOf(address(this)));
     }
 
-    function fulfillRandomness(bytes32 _requestID, uint256 _randomNumber)
+    function fulfillRandomness(bytes32 requestID, uint256 randomNumber)
         internal
         override
     {
-        uint256[] memory randomValues = _expand(_randomNumber, 3);
+        uint256[] memory randomValues = _expand(randomNumber, 3);
         Properties storage properties = tokenIDToProperties[tokenCounter];
-        properties.flavor = requestIDToFlavor[_requestID];
+        properties.flavor = requestIDToFlavor[requestID];
         properties.wrapper = Wrapper(
             randomValues[0] % 2 == 0 ? 0 : (randomValues[1] % 4) + 1
         );
         properties.color = randomValues[2] % 2**24;
         emit gumAssigned(tokenCounter, properties);
-        _safeMint(requestIDToSender[_requestID], tokenCounter);
+        _safeMint(requestIDToSender[requestID], tokenCounter);
         tokenCounter++;
     }
 
-    function _expand(uint256 _randomValue, uint256 _n)
+    function _expand(uint256 randomNumber, uint256 n)
         internal
         pure
         returns (uint256[] memory expandedValues)
     {
-        expandedValues = new uint256[](_n);
-        for (uint256 i = 0; i < _n; i++) {
-            expandedValues[i] = uint256(keccak256(abi.encode(_randomValue, i)));
+        expandedValues = new uint256[](n);
+        for (uint256 i = 0; i < n; i++) {
+            expandedValues[i] = uint256(keccak256(abi.encode(randomNumber, i)));
         }
         return expandedValues;
     }
