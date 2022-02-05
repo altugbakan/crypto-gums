@@ -2,12 +2,12 @@
 pragma solidity ^0.8.0;
 
 interface IGum {
-    event requestedCollectible(
+    event RequestedCollectible(
         bytes32 indexed requestID,
         uint256 tokenID,
         uint256 flavor
     );
-    event gumAssigned(
+    event GumAssigned(
         uint256 indexed tokenID,
         uint256 flavor,
         uint256 wrapper,

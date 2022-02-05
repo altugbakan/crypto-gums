@@ -9,12 +9,12 @@ contract Gum is ERC721URIStorage, VRFConsumerBase {
     uint256 public constant MAX_MINT = 20000;
     uint256 public constant PRICE = 2 ether;
 
-    event requestedCollectible(
+    event RequestedCollectible(
         bytes32 indexed requestID,
         uint256 tokenID,
         Flavor flavor
     );
-    event gumAssigned(uint256 indexed tokenID, Properties properties);
+    event GumAssigned(uint256 indexed tokenID, Properties properties);
 
     struct Properties {
         Flavor flavor;
