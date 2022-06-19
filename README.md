@@ -1,10 +1,10 @@
 # Crypto Gums
 
 <div align="center">
-    <a href=https://cryptogum.shop>
+    <a href=https://gums.surge.sh>
         <img src=https://user-images.githubusercontent.com/43248015/146649062-4479da2a-f528-4593-8330-5ede0a0dffeb.gif>
     </a>
-    <h3>Contract for the <a href=https://cryptogum.shop>Crypto Gums</a> NFT.<h3>
+    <h3>Contract for the <a href=https://gums.surge.sh target="_blank" rel="noreferrer">Crypto Gums</a> NFT.<h3>
     <h3> <a href=https://polygonscan.com/address/0xe7d8Db9d11D56dB3cf11de9bA624f3891318483F>0xe7d8Db9d11D56dB3cf11de9bA624f3891318483F</a> on Polygon Chain</h3>
 </div>
 <br />
